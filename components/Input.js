@@ -7,6 +7,7 @@ const Input = ({
   text,
   error,
   placeholder,
+  value
 }) => {
   return (
     <>
@@ -19,7 +20,7 @@ const Input = ({
         placeholder={placeholder}
       />
       {text}
-      <span>{error}</span>
+      <span className="text-danger mb-2">{error}</span>
       <style jsx>{`
         input {
           border: 1px solid #000;
