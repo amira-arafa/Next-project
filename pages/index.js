@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { storeLoginData } from "../redux/login/actions"
+import { storeLoginData } from "../redux/login/actions";
 
 const index = () => {
   const router = useRouter();
@@ -16,12 +16,16 @@ const index = () => {
     f(e);
   };
   const handleSubmit = preventDefault(() => {
-    const { password , email } = state;
-    if(email.value && password.value && !password.err &&!email.err){
-      dispatch(storeLoginData({
-        email:email.value,
-        password: password.value
-      }))
+    const { password, email } = state;
+    if (email.value && password.value && !password.err && !email.err) {
+      const data = {
+        email: email.value,
+        password: password.value,
+      };
+      dispatch(storeLoginData(data));
+      if (process.browser) {
+        localStorage.setItem("user", JSON.stringify(data));
+      }
       router.push({
         pathname: "/home",
       });
@@ -82,7 +86,7 @@ const index = () => {
     });
     setValidations(e, name);
   };
-  const { password , email } = state;
+  const { password, email } = state;
   return (
     <>
       <Head>
@@ -126,8 +130,20 @@ const index = () => {
             error={state.password.err}
             onChange={(e) => onInputChange(e, "password")}
           />
-          <Button text="login" className="d-flex m-auto mt-1" type="submit" disabled={!(email.value && password.value && !password.err &&!email.err)} />
-          {!(email.value && password.value && !password.err &&!email.err) && <small className="text-muted"> fill valid data to be able to login</small>}
+          <Button
+            text="login"
+            className="d-flex m-auto mt-1"
+            type="submit"
+            disabled={
+              !(email.value && password.value && !password.err && !email.err)
+            }
+          />
+          {!(email.value && password.value && !password.err && !email.err) && (
+            <small className="text-muted">
+              {" "}
+              fill valid data to be able to login
+            </small>
+          )}
         </div>
         <style jsx>{`
           .login-form {
