@@ -4,7 +4,6 @@ import axios from "axios";
 
 
 export const getUserList = () => async (dispatch) => {
-    try {
       const res = await axios.get(
         `https://jsonplaceholder.typicode.com/users`,
       );
@@ -12,7 +11,14 @@ export const getUserList = () => async (dispatch) => {
           type : types.STORE_USERS_LIST_DATA ,
           payload: res.data
       })
-      
-    } catch (err) {
-    }
+  };
+
+  export const getUserDetails = (id) => async (dispatch) => {
+      const res = await axios.get(
+        `https://jsonplaceholder.typicode.com/users/${id}`,
+      );
+      res && dispatch({
+          type : types.STORE_SINGLE_USER_DATA,
+          payload: res.data
+      })
   };

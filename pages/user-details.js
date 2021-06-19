@@ -1,29 +1,25 @@
 import Button from "../components/Button";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { getUserList } from "../redux/usersList/actions";
-import { useDispatch } from "react-redux";
+import { getUserDetails } from "../redux/usersList/actions";
 
 const home = () => {
   const router = useRouter();
   const disptach = useDispatch();
   const { loginData } = useSelector((state) => state.login);
-  const { usersList } = useSelector((state) => state.users);
+  const { singleUser } = useSelector((state) => state.users);
+
   const handleClick = () => {
     router.push({
       pathname: "/",
     });
   };
-  const handleUserClick = (id) => {
-    router.push({
-      pathname: `/user-details`,
-      query: { id }
-    });
-  }
   useEffect(() => {
-    disptach(getUserList());
-  }, [getUserList]);
+    if (router && router.query) {
+      router.query.id && disptach(getUserDetails(router.query.id));
+    }
+  }, [router]);
   return (
     <div className="users-list-container">
       <div className=" row align-items-baseline">
@@ -42,20 +38,32 @@ const home = () => {
           )}
         </div>
       </div>
+
       <div>
-        <h3 className="text-center"> Users List</h3>
+        <h3 className="text-center"> User Details</h3>
       </div>
-      <div className="row text-center mt-5">
-        {usersList &&
-          usersList.map((user) => {
-            return (
-              <div key={user.id} className="col-sm-3 users-list-card mb-4 cursor-pointer" onClick={()=> handleUserClick(user.id)}>
-                <p>{user?.name}</p>
-                <p>{user?.phone}</p>
-              </div>
-            );
-          })}
-      </div>
+
+      {singleUser && (
+        <div className="row text-center mt-5">
+          <div
+            key={singleUser.id}
+            className="col-sm-3 single-details-card mb-4 cursor-pointer m-auto"
+          >
+            <div className="form-check form-switch">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+              />
+            </div>
+            <p>{singleUser?.id}</p>
+            <p>{singleUser?.email}</p>
+            <p>{singleUser?.name}</p>
+            <p>{singleUser?.phone}</p>
+            <p>{singleUser?.website}</p>
+          </div>
+        </div>
+      )}
       <style>
         {`
         .users-list-container{
@@ -65,14 +73,13 @@ const home = () => {
           margin:32px;
           height:100%;
         }
-        .users-list-card{
-          border: 1px solid #000;
-          padding: 30px;
-          border-radius: 10px;
-          margin:48px;
-        }
         .cursor-pointer{
           cursor: pointer;
+        }
+        .single-details-card{
+            border: 1px solid #000;
+            padding: 30px;
+            border-radius: 10px;
         }
         `}
       </style>
