@@ -8,6 +8,7 @@ const home = () => {
   const router = useRouter();
   const disptach = useDispatch();
   const { loginData } = useSelector((state) => state.login);
+  const parsedData = loginData && JSON.parse(loginData)
   const { singleUser } = useSelector((state) => state.users);
 
   const handleClick = () => {
@@ -27,8 +28,8 @@ const home = () => {
           <img src="/static/logo.png" alt="logo" height="90px"></img>
         </div>
         <div className="col-sm-2 offset-sm-8 ">
-          {loginData ? (
-            <p>{loginData?.email}</p>
+          {parsedData ? (
+            <p>{parsedData?.email}</p>
           ) : (
             <Button
               text="login"

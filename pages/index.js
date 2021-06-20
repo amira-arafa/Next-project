@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { storeLoginData } from "../redux/login/actions";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const preventDefault = (f) => (e) => {
@@ -22,7 +22,7 @@ const index = () => {
         email: email.value,
         password: password.value,
       };
-      dispatch(storeLoginData(data));
+      dispatch(storeLoginData(JSON.stringify(data)));
       if (process.browser) {
         localStorage.setItem("user", JSON.stringify(data));
       }
@@ -159,4 +159,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

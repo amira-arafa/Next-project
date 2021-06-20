@@ -10,6 +10,7 @@ const home = () => {
   const disptach = useDispatch();
   const { loginData } = useSelector((state) => state.login);
   const { usersList } = useSelector((state) => state.users);
+  const parsedData = loginData && JSON.parse(loginData)
   const handleClick = () => {
     router.push({
       pathname: "/",
@@ -31,8 +32,8 @@ const home = () => {
           <img src="/static/logo.png" alt="logo" height="90px"></img>
         </div>
         <div className="col-sm-2 offset-sm-8 ">
-          {loginData ? (
-            <p>{loginData?.email}</p>
+          {parsedData ? (
+            <p>{parsedData?.email}</p>
           ) : (
             <Button
               text="login"
